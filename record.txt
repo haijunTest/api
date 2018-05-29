@@ -1,0 +1,303 @@
+H5页面生产链接（注册）:
+https://puff.ebyunfu.com/mobile/getRegister.html
+H5页面测试链接:（注册）
+http://172.16.89.74:3000/mobile/getRegister.html
+
+
+172.16.89.74
+root/Admin123
+查看控台日志
+cd dockerrun
+cat osp.sh
+cd /home/volumns/web/logs
+ls -lrt
+tail -f p2p_web_dai
+172.16.89.89
+
+
+~：标识当前目录/根目录
+
+
+ssm 配置:
+https://www.cnblogs.com/aflyun/p/6421441.html
+
+
+jdbc_driverClassName =com.mysql.jdbc.Driver
+jdbc_url=jdbc:mysql://localhost:3306/ssm?useUnicode=true&characterEncoding=utf8
+jdbc_username=root
+jdbc_password=root
+
+
+在mapper查找数据的时候，可以有两种方式:1、在方法里边添加参数 查找的是list集合 parameterType=java.util.list；2、将数据放到map集合中，然后在mapper.xml中查找 parameterType=java.util.map
+
+
+@bean
+凡是子类及带属性、方法的类都注册Bean到Spring中,交给它管理;
+@Bean用在方法上,告诉Spring容器,你可以从下面这个方法中拿到一个Bean
+eg:
+package com.edu.service;
+       @Configuration
+       public class FruitService {
+          @Autowired
+          private Apple apple;
+          @Autowired
+          private GinSeng ginseng;
+    //定义一个产生Bean的方法
+       @Bean(name="getApple")
+       public Fruit<?> getApple(){
+       System.out.println(apple.getClass().getName().hashCode);
+         System.out.println(ginseng.getClass().getName().hashCode);
+       return new Apple();
+}
+}
+/*
+*测试类
+*/
+@RunWith(BlockJUnit4ClassRunner.class)
+public class Config {
+    public Config(){
+        super("classpath:spring-fruit.xml");
+    }
+    @Test
+    public void test(){
+        super.getBean("getApple");//这个Bean从哪来，从上面的@Bean下面的方法中来，返回
+                                                          的是一个Apple类实例对象
+         
+    }
+
+	
+Java中构造函数的调用顺序：
+
+（1）在其他任何事物发生之前，将分配给对象的存储空间初始化成二进制0；
+（2）调用基类构造函数。从根开始递归下去，因为多态性此时调用子类覆盖后的draw()方法（要在调用RoundGlyph构造函数之前调用），由于步骤1的缘故，我们此时会发现radius的值为0；
+（3）按声明顺序调用成员的初始化方法；
+（4）最后调用子类的构造函数。
+eg：	
+class Glyph {
+    void draw() {
+        System.out.println("Glyph.draw()");
+    }
+    Glyph() {
+        System.out.println("Glyph() before draw()");
+        draw();
+        System.out.println("Glyph() after draw()");
+    }
+}
+class RoundGlyph extends Glyph {
+    private int radius = 1;
+
+    RoundGlyph(int r) {
+        radius = r;
+        System.out.println("RoundGlyph.RoundGlyph(). radius = " + radius);
+    }
+
+    void draw() {
+        System.out.println("RoundGlyph.draw(). radius = " + radius);
+    }
+}
+public class PolyConstructors {
+
+    public static void main(String[] args) {
+        new RoundGlyph(5);
+
+    }
+}
+输出：
+Glyph() before draw()
+RoundGlyph.draw(). radius = 0
+Glyph() after draw()
+RoundGlyph.RoundGlyph(). radius = 5
+
+
+Java类中属性域的访问操作都由编译器解析，因此不是多态的。父类和子类的同名属性都会分配不同的存储空间，如下：
+class Super {
+    public int field = 0;
+    public int getField() {
+        return field;
+    }
+}
+class Sub extends Super {
+    public int field = 1;
+    public int getField() {
+        return field;
+    }
+    public int getSuperField() {
+        return super.field;
+    }
+}
+public class FieldAccess {
+
+    public static void main(String[] args) {
+        Super sup = new Sub();
+        System.out.println("sup.filed = " + sup.field + 
+                ", sup.getField() = " + sup.getField());
+        Sub sub = new Sub();
+        System.out.println("sub.filed = " + sub.field + 
+                ", sub.getField() = " + sub.getField() + 
+                ", sub.getSuperField() = " + sub.getSuperField());
+    }
+}
+sup.filed = 0, sup.getField() = 1
+sub.filed = 1, sub.getField() = 1, sub.getSuperField() = 0
+Sub子类实际上包含了两个称为field的域，然而在引用Sub中的field时所产生的默认域并非Super版本的field域，因此为了得到Super.field，必须显式地指明super.field。
+
+
+git add .
+git commit -m "code clean"
+git push
+
+git fetch upstream
+git merge upstream/boot2
+git push
+
+
+
+
+
+
+首先介绍一种网上普遍的方法，就是查找占据80端口的进程，然后关闭它就行了。
+
+ 
+
+1、运行cmd，然后输入netstat -a -n -o，回车；
+2、查看开头几行包含0.0.0.0:80的那一行最后的pid，为几个数字，把这几个数字记下来；
+3、启动“任务管理器”——“进程”，在“工具栏”——“选择列”前面的框里打上勾；
+4、然后找到与刚才那个pid对应的是哪个程序，很容易就会找到，就是它与0.0.0.0:80进行了绑定（bind）；
+
+ 
+
+ 
+
+结束这个进程，再点击Apache的Start按钮，终于出现了那个Running。
+
+ 
+
+ 
+
+但是上面的方法不适用我的情况。。因为我找不到pid=4的进程，于是另一方法。
+
+Win7的80端口默认是被System进程占用的。
+
+用如下方法可以解决System进程占用80端口的问题：
+
+打开RegEdit:开始-运行-输入regedit-调出注册表
+
+找到HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\HTTP
+
+找到一个DWORD值Start，将其改为0
+
+重启电脑，System进程将不会占用80端口
+
+就可以打开你的apache了
+
+
+
+
+ 
+
+这种方法确实暂时解决了我的问题，应该就是这样的，但是后面又来问题了。Apache又无缘无故的打不开了。于是，最后终于发现了进程有个SQL Server ReportingServices，这个是sql servers带有的，而且自动运行，关闭它，就可以了。但是切记，可能这个进程会自动打开，所以先把apache打开，这个的话后面SQL Server ReportingServices运行也不会占用80端口了。我用的360查找的
+
+我的问题总算是解决了。最后总结一下吧。
+
+ 
+
+查询：查看占用80端口的信息，那么可以在cmd窗口输入netstat -ano | findstr "80" 命令
+
+常见的几种情况：
+
+1、迅雷等程序或者一些其他有上传功能的软件都会占用电脑的80端口
+
+2、netstat -abno后查看，经过查找为pid=4的system进程，因为是系统进程，也无法结束它，经查SQL Server ReportingServices (SQLEXPRESS) 服务占用80端口，停止SQL Server ReportingServices后APache正常启动.
+
+3、卸载internet信息服务-->万维网服务。这个是最常见的故障，或者其他一些第三方的服务器软件，必须在进程里面结束，才有效果。
+
+备注：杀掉进程的命令：taskkill /pid 4 /f其中 /f表示强制关闭该进程
+
+
+
+
+String s;
+s.intern(); intern 方法：
+==》
+public String intern()
+返回字符串对象的规范化表示形式。 
+一个初始时为空的字符串池，它由类 String 私有地维护。 当调用 intern 方法时，如果池已经包含一个等于此 String 对象的字符串（该对象由 equals(Object) 方法确定），则返回池中的字符串。否则，将此 String 对象添加到池中，并且返回此 String 对象的引用。 它遵循对于任何两个字符串 s 和 t，当且仅当 s.equals(t) 为 true 时，s.intern() == t.intern() 才为 true
+总结出来其意思如下：
+如果：s.intern()方法的时候，会将共享池中的字符串与外部的字符串(s)进行比较,如果共享池中有与之相等的字符串，则不会将外部的字符串放到共享池中的，返回的只是共享池中的字符串，如果不同则将外部字符串放入共享池中，并返回其字符串的句柄（引用）-- 这样做的好处就是能够节约空间
+
+
+
+supercsv
+
+SpringBoot+MyBatis框架+mysql数据库的整合（配置文件版）
+https://blog.csdn.net/qq_35153200/article/details/79538434
+
+
+
+400 - 错误的请求。 
+·401 - 访问被拒绝。IIS 定义了许多不同的 401 错误，它们指明更为具体的错误原因。这些具体的错误代码在浏览器中显示，但不在 IIS 日志中显示： ·401.1 - 登录失败。 
+·401.2 - 服务器配置导致登录失败。 
+·401.3 - 由于 ACL 对资源的限制而未获得授权。 
+·401.4 - 筛选器授权失败。 
+·401.5 - ISAPI/CGI 应用程序授权失败。 
+·401.7 – 访问被 Web 服务器上的 URL 授权策略拒绝。这个错误代码为 IIS 6.0 所专用。 
+·403 - 禁止访问：IIS 定义了许多不同的 403 错误，它们指明更为具体的错误原因： ·403.1 - 执行访问被禁止。 
+·403.2 - 读访问被禁止。 
+·403.3 - 写访问被禁止。 
+·403.4 - 要求 SSL。 
+·403.5 - 要求 SSL 128。 
+·403.6 - IP 地址被拒绝。 
+·403.7 - 要求客户端证书。 
+·403.8 - 站点访问被拒绝。 
+·403.9 - 用户数过多。 
+·403.10 - 配置无效。 
+·403.11 - 密码更改。 
+·403.12 - 拒绝访问映射表。 
+·403.13 - 客户端证书被吊销。 
+·403.14 - 拒绝目录列表。 
+·403.15 - 超出客户端访问许可。 
+·403.16 - 客户端证书不受信任或无效。 
+·403.17 - 客户端证书已过期或尚未生效。 
+·403.18 - 在当前的应用程序池中不能执行所请求的 URL。这个错误代码为 IIS 6.0 所专用。 
+·403.19 - 不能为这个应用程序池中的客户端执行 CGI。这个错误代码为 IIS 6.0 所专用。 
+·403.20 - Passport 登录失败。这个错误代码为 IIS 6.0 所专用。 
+·404 - 未找到。 ·404.0 -（无） – 没有找到文件或目录。 
+·404.1 - 无法在所请求的端口上访问 Web 站点。 
+·404.2 - Web 服务扩展锁定策略阻止本请求。 
+·404.3 - MIME 映射策略阻止本请求。 
+·405 - 用来访问本页面的 HTTP 谓词不被允许（方法不被允许） 
+·406 - 客户端浏览器不接受所请求页面的 MIME 类型。 
+·407 - 要求进行代理身份验证。 
+·412 - 前提条件失败。 
+·413 – 请求实体太大。 
+·414 - 请求 URI 太长。 
+·415 – 不支持的媒体类型。 
+·416 – 所请求的范围无法满足。 
+·417 – 执行失败。 
+·423 – 锁定的错误。
+
+windows 启动(先启动namesrv):
+mqnamesrv
+mqbroker -n localhost:9876autoCreateTopicEnable=true
+
+
+关闭：
+mqshutdown namesrv
+mqshutdown broker
+
+
+Grpc
+
+mq
+
+Eurake+Feggion+Ribbon
+
+
+
+
+
+
+
+
+
+
