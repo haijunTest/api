@@ -111,4 +111,7 @@ dependencies {
     compile group: 'com.alibaba.rocketmq', name: 'rocketmq-common', version: '3.6.2.Final'
     compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.9.1'
     compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
+
+    //MapperFacade
+    compile group: 'ma.glasnost.orika', name: 'orika-core', version: '1.5.2'
 }
